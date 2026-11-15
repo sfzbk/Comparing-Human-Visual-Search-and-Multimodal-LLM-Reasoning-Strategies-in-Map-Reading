@@ -178,7 +178,7 @@ def draw_p_heatmap(input):
 def draw_heatmap(by='respondent'):
 
     def get_heatmap_data(df):
-        heatmap_data = df[['Code', 'X', 'Y']].pivot_table(index='Y', columns='X', aggfunc='count', fill_value=0)
+        heatmap_data = df[['GridAoi', 'X', 'Y']].pivot_table(index='Y', columns='X', aggfunc='count', fill_value=0)
         heatmap_data.columns = heatmap_data.columns.droplevel(0)
         ## Align to an 8x8 grid
         target_rows = list("ABCDEFGH")  # ['A', 'B', ..., 'H']
@@ -213,14 +213,14 @@ def draw_heatmap(by='respondent'):
         print(f'【INFO】output/pics/heatmap/by_{by}/{note}_{respondent}.png saved.')
 
 
-    data = pd.read_csv('output/all_code.csv')
+    data = pd.read_csv('data/all_code.csv')
     # Rename models to shorter names
     rename_dict = {'human':'human','gemini-3-pro':'gemini','glm-4.6v':'glm','gpt-5':'gpt',
                          'hunyuan-t1-vision-20250916':'hunyuan','qwen3-vl-8b-thinking':'qwen'}
     data['Respondent'] = data['Respondent'].map(rename_dict)
 
-    data['Y'] = data['Code'].str[0]
-    data['X'] = data['Code'].str[1]
+    data['Y'] = data['GridAoi'].str[0]
+    data['X'] = data['GridAoi'].str[1]
 
     # Draw heatmaps for each model and task, and for all humans for each task
     if by == 'respondent_task':
@@ -356,12 +356,12 @@ def draw_heatmap(by='respondent'):
         print('【WARN】Input value "by" error.')
 
 if __name__ == '__main__':
-    # draw_violin()
-    # draw_bar()
+    draw_violin()
+    draw_bar()
 
-    # draw_p_heatmap('CodeLen')
-    # draw_p_heatmap('UniqueTypes')
-    # draw_p_heatmap('IsCorrect')
+    draw_p_heatmap('CodeLen')
+    draw_p_heatmap('UniqueTypes')
+    draw_p_heatmap('IsCorrect')
 
     # draw_heatmap()
     draw_heatmap(by='respondent_task')

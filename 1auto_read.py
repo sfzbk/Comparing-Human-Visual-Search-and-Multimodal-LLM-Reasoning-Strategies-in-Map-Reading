@@ -117,18 +117,18 @@ def get_code(cfg, run_ai_code):
     print(f'Model: {cfg['model']}')
 
     df = pd.read_excel(cfg['result_xlsx'], header=0)
-    # Check whether the 'Code' column exists; add it if missing
-    if not 'Code' in df.columns:
-        df['Code'] = ''
-        print(f'[INFO]{cfg['result_xlsx']} does not have a Code column; it has been created automatically.'
+    # Check whether the 'GridAoi' column exists; add it if missing
+    if not 'GridAoi' in df.columns:
+        df['GridAoi'] = ''
+        print(f'[INFO]{cfg['result_xlsx']} does not have a GridAoi column; it has been created automatically.'
               f'Current columns in order: {df.columns}')
-    # For nonempty AI Answer entries, check Code; if empty, extract a code from the corresponding AI Answer
+    # For nonempty AI Answer entries, check GridAoi; if empty, extract a code from the corresponding AI Answer
     for i in range(len(df)):
         todo_text = df.loc[i, 'AI Answer']   # Get the text to convert into a code
         if todo_text:
             global skipping # Improve output formatting with line breaks
 
-            if (not df.loc[i, 'Code']) or (pd.isnull(df.loc[i, 'Code'])):
+            if (not df.loc[i, 'GridAoi']) or (pd.isnull(df.loc[i, 'GridAoi'])):
                 if skipping == 1:   # Improve output formatting with line breaks
                     print('')
                     skipping = 0
@@ -136,11 +136,11 @@ def get_code(cfg, run_ai_code):
                 code = run_ai_code(cfg, todo_text)
                 if code.strip() == '':
                     raise ValueError('【WARN】Empty code!')
-                df.loc[i, 'Code'] = code
+                df.loc[i, 'GridAoi'] = code
                 df.to_excel(cfg['result_xlsx'], index=False)
-                print(f'[INFO]Row {i+1}: Code={code}')
+                print(f'[INFO]Row {i+1}: GridAoi={code}')
             else:
-                print(f'\r[INFO]Row {str(i+1).zfill(3)} already has a Code value; skipped.', end='', flush=True)
+                print(f'\r[INFO]Row {str(i+1).zfill(3)} already has a GridAoi value; skipped.', end='', flush=True)
                 skipping = 1    # Improve output formatting with line breaks
 
 # -------------------------------------------------

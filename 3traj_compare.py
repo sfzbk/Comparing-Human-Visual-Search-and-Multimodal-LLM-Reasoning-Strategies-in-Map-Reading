@@ -190,8 +190,8 @@ if '__main__' == __name__:
     temp_df = pd.DataFrame()
 
     try:
-        # compare_model_human()
-        # compare_human()
+        compare_model_human()
+        compare_human()
         compare_ai()
 
     except KeyboardInterrupt:
